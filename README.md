@@ -68,6 +68,11 @@ cl_demo_output=>write( lv_prompt ).     "check out the resulting prompt
 cl_demo_output=>display(  ).
 ```
 
+## Dependencies
+
+The library is self-contained for the core functionality of the Vector Search.
+However if you want to generate embeddings, you might want to install this [OpenAI ABAP SDK](https://github.com/microsoft/aisdkforsapabap).
+
 ## Installation
 
 Install this repository using [abapGit](https://github.com/abapGit/abapGit#abapgit).
