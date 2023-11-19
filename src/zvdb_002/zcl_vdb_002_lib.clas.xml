@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_VDB_002_LIB</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Simple Vector Search</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+    <WITH_UNIT_TESTS>X</WITH_UNIT_TESTS>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>BF</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Brute Force</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>BF_FAR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Brute Force Furthest Vector (!= initial vector)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>BF_FAR_MID</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Brute Force Middle Vector (!= initial vector)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>BF_IN_TT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Brute Force in Table (in-place, changing)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>BF_MID</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Brute Force Middle Vector (!= initial vector)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>BF_MID_FAR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Brute Force Middle Vector (!= initial vector)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>BF_VS_TT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Brute Force vs Table (return new table)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>CLASS_CONSTRUCTOR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>CLASS_CONSTRUCTOR</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>CONSTRUCTOR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>CONSTRUCTOR</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>HASH</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Hyperplane Hashing</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>HASH_S</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>as struct</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>QF_IN_TT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Quick Force in Table (in-place, changing)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>RANK_ALL_TO_AUTOCALIBRATE_M</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Mediana</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>BF_FAR</CMPNAME>
+     <SCONAME>RS_</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Globally Unique Identifier</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CONSTRUCTOR</CMPNAME>
+     <SCONAME>IV_</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>2 byte integer (signed)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>DP_8</CMPNAME>
+     <SCONAME>IX_0</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Vector Q1b</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>DP_8</CMPNAME>
+     <SCONAME>IX_1</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Vector Q1b</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GUID</CMPNAME>
+     <SCONAME>RV_</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Globally Unique Identifier</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>INIT_INSTANCE</CMPNAME>
+     <SCONAME>IV_</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>2 byte integer (signed)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>NEW</CMPNAME>
+     <SCONAME>IV_</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>2 byte integer (signed)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>NEW</CMPNAME>
+     <SCONAME>RO_</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Vector</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>RANDOM_V</CMPNAME>
+     <SCONAME>RX_</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>1536 vector bitmap (768 x 2) -&gt; 1536/8 -&gt; 192 bytes (RAW)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>RANDOM_VECTOR</CMPNAME>
+     <SCONAME>RS_</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>1536 vector bitmap (768 x 2) -&gt; 1536/8 -&gt; 192 bytes (RAW)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>RANK_ALL_TO_AUTOCALIBRATE_M</CMPNAME>
+     <SCONAME>IV_</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>defaut hash hyperspace split treshold</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>READ_VECTOR</CMPNAME>
+     <SCONAME>IV_</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Globally Unique Identifier</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>READ_VECTOR</CMPNAME>
+     <SCONAME>RS_</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Vector</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>RECALIBRATE_HASH</CMPNAME>
+     <SCONAME>IV_</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Character Field Length 1</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>RECALIBRATE_HASH</CMPNAME>
+     <SCONAME>IV_TRESHOLD</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>defaut hash hyperspace split treshold</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>RECALIBRATE_HASH_AND_REINDEX</CMPNAME>
+     <SCONAME>IV_</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Character Field Length 1</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>RECALIBRATE_HASH_AND_REINDEX</CMPNAME>
+     <SCONAME>IV_TRESHOLD</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>defaut hash hyperspace split treshold</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>REINDEX_ALL</CMPNAME>
+     <SCONAME>IV_</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>2 byte integer (signed)</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>

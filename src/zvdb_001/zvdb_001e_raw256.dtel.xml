@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_DTEL" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <DD04V>
+    <ROLLNAME>ZVDB_001E_RAW256</ROLLNAME>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <HEADLEN>55</HEADLEN>
+    <SCRLEN1>10</SCRLEN1>
+    <SCRLEN2>20</SCRLEN2>
+    <SCRLEN3>40</SCRLEN3>
+    <DDTEXT>2048 vector bitmap (512 x 4) -&gt; 2048/8 -&gt; 256 bytes (RAW)</DDTEXT>
+    <REPTEXT>VBitmap</REPTEXT>
+    <SCRTEXT_S>VBitmap</SCRTEXT_S>
+    <SCRTEXT_M>VBitmap</SCRTEXT_M>
+    <SCRTEXT_L>VBitmap</SCRTEXT_L>
+    <DTELMASTER>E</DTELMASTER>
+    <DATATYPE>RAW</DATATYPE>
+    <LENG>000256</LENG>
+    <OUTPUTLEN>000512</OUTPUTLEN>
+   </DD04V>
+  </asx:values>
+ </asx:abap>
+</abapGit>
