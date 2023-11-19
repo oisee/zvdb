@@ -77,5 +77,4 @@ However if you want to generate embeddings, you might want to install this [Open
 
 Install this repository using [abapGit](https://github.com/abapGit/abapGit#abapgit).
 
-© 2023 Alice Vinogradova.  
-For more information, see the [LICENSE](LICENSE) file in this repository.
+© 2023 Alice Vinogradova. For more information, see the [LICENSE](LICENSE) file in this repository.
