@@ -75,6 +75,32 @@ please provide response to the following request:
 The library is self-contained for the core functionality of the Vector Search.
 However if you want to generate embeddings, you might want to install this [OpenAI ABAP SDK](https://github.com/microsoft/aisdkforsapabap).
 
+To instantiate SDK you might need to use your own private keys, you can store them locally in a simple key-value .env file, something like:
+
+```.env
+#https://<subdomain>.openai.azure.com/openai/deployments/<api_dep>/chat/completions?api-version=2023-07-01-preview
+#https://<subdomain>.openai.azure.com/openai/deployments/<api_dep>/chat/completions?api-version=<API_VER>
+API_URL=https://<subdomain>.openai.azure.com/
+API_VER=2023-07-01-preview
+API_KEY=<xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx>
+API_DEP=<deployment_id>
+API_DEP_EMBED=<deployment_id_embedding_model>
+```
+
+
+```ABAP
+    DATA(lo_) = zcl_vdb_000_dotenv=>new( lv_path ).
+    DATA(lv_api_key) = cut->v( 'API_KEY' ).
+
+    data(ls_) = VALUE ts_env(
+      api_url       = lo_->v( k = 'API_URL' )
+      api_ver       = lo_->v( k = 'API_VER' )
+      api_key       = lo_->v( k = 'API_KEY' )
+      api_dep       = lo_->v( k = 'API_DEP' )
+      api_dep_embed = lo_->v( k = 'API_DEP_EMBED' )
+    ).
+
+```
 ## Installation
 
 Install this repository using [abapGit](https://github.com/abapGit/abapGit#abapgit).
