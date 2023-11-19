@@ -25,49 +25,49 @@ please provide response to the following request:
     DATA(lo_lib) = zcl_vdb_002_lib=>new( ). "instantiate library
 
     DATA(ls_v) = lo_lib->read_vector( id ). "read vector from DB by its GUID
-    DATA(lt_q) = lo_lib->query( ls_v-q1b ). "quety DB with the quantized 1536-dimensional vector
+    DATA(lt_q) = lo_lib->query( ls_v-q1b ). "query DB with the quantized 1536-dimensional vector
 
     cl_demo_output=>display( lt_q ). "observe ranked result
 ```
 ### Answer with RAG:
 ```abap
-DATA(lo_e) = zcl_vdb_002_embedding_full=>new( ). "using https://github.com/microsoft/aisdkforsapabap
+    DATA(lo_e) = zcl_vdb_002_embedding_full=>new( ). "using https://github.com/microsoft/aisdkforsapabap
 
-data(lv_text) = 'Answer to the Ultimate Question of Life, the Universe, and Everything'.
+    DATA(lv_text) = 'Answer to the Ultimate Question of Life, the Universe, and Everything'.
 
 * Embed and save text, retrieve ID
-DATA(lv_id_q) = lo_e->embed_and_save( lv_text )-id.
-COMMIT WORK AND WAIT.
+    DATA(lv_id_q) = lo_e->embed_and_save( lv_text )-id.
+    COMMIT WORK AND WAIT.
 
 * Generate an answer as vector
-DATA(lx_a) = lo_e->answer( lv_text ).
+    DATA(lx_a) = lo_e->answer( lv_text ).
 *--------------------------------------------------------------------*
-DATA(lo_lib) = zcl_vdb_002_lib=>new( ).
-DATA(lt_q) = lo_lib->query_by_id( lv_id_q ). "get chunks semantically close to the question
+    DATA(lo_lib) = zcl_vdb_002_lib=>new( ).
+    DATA(lt_q) = lo_lib->query_by_id( lv_id_q ). "get chunks semantically close to the question
 * Query for answers
-DATA(lt_a) = lo_lib->query( lx_a ).          "get chunks semantically close to the "modelled answer"
+    DATA(lt_a) = lo_lib->query( lx_a ).          "get chunks semantically close to the "modelled answer"
 
 * Combine, sort, and remove duplicates from query results
-DATA(lt_all) = lt_q.
-APPEND LINES OF lt_a TO lt_all.
-SORT lt_all BY id.
-DELETE ADJACENT DUPLICATES FROM lt_all.
+    DATA(lt_all) = lt_q.
+    APPEND LINES OF lt_a TO lt_all.
+    SORT lt_all BY id.
+    DELETE ADJACENT DUPLICATES FROM lt_all.
 
 * Prepare for RAG (Retrieve and Generate) method
-DATA: lv_prompt TYPE string.
-DATA: lt_used TYPE zcl_vdb_002_lib=>tt_vector.
+    DATA: lv_prompt TYPE string.
+    DATA: lt_used TYPE zcl_vdb_002_lib=>tt_vector.
 
 * Execute RAG with text and combined results, get prompt and used vectors
-DATA(lv_rag_answer) = lo_e->rag(
-                        EXPORTING iv_ = lv_text
-                                  it_ = lt_all
-                        IMPORTING ev_prompt = lv_prompt
-                                  et_used   = lt_used
-).
+    DATA(lv_rag_answer) = lo_e->rag(
+                            EXPORTING iv_ = lv_text
+                                      it_ = lt_all
+                            IMPORTING ev_prompt = lv_prompt
+                                      et_used   = lt_used
+    ).
 
-cl_demo_output=>write( lv_rag_answer ). "observe RAG answer
-cl_demo_output=>write( lv_prompt ).     "check out the resulting prompt
-cl_demo_output=>display(  ).
+    cl_demo_output=>write( lv_rag_answer ). "observe RAG answer
+    cl_demo_output=>write( lv_prompt ).     "check out the resulting prompt
+    cl_demo_output=>display(  ).
 ```
 
 ## Dependencies
