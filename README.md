@@ -33,8 +33,10 @@ please provide response to the following request:
 ```abap
 DATA(lo_e) = zcl_vdb_002_embedding_full=>new( ). "using https://github.com/microsoft/aisdkforsapabap
 
+data(lv_text) = 'Answer to the Ultimate Question of Life, the Universe, and Everything'.
+
 * Embed and save text, retrieve ID
-DATA(lv_id_q) = lo_e->embed_and_save( 'Answer to the Ultimate Question of Life, the Universe, and Everything' )-id.
+DATA(lv_id_q) = lo_e->embed_and_save( lv_text )-id.
 COMMIT WORK AND WAIT.
 
 * Generate an answer as vector
