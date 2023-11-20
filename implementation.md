@@ -69,7 +69,7 @@ The measure of similarity between two vectors - [Cosine similarity](https://cola
 
 And it can be calculated as dot product (or scalar product):
 
-**[a1,a2,a3,a4] • [b1,b2,b3,b4] = a1\*b1 + a2\*b2 + a3\*b3 + a4\*b4**
+**[x1,y1,z1] • [x2,y2,z2] = x1\*x2 + y1\*y2 + z1\*z2**
 
 i.e. comparison of two 1536d vectors requires:
  - 1536 multiplications
@@ -115,7 +115,7 @@ Quantized:
 Bitwise multiplication is XOR: With 0 and 1 as +1 and -1:
 
 -   **0 xor 0 = 0** *(+1 \* +1 = +1 )*
--   **1 xor 1 = 0** *(-1 \* -1 = -1 )*
+-   **1 xor 1 = 0** *(-1 \* -1 = +1 )*
 -   **0 xor 1 = 1** *(1 \* -1 = -1 )*
 -   **1 xor 0 = 1** *(-1 \* 1 = -1 )*
 
