@@ -12,14 +12,13 @@ CLASS lcl_ DEFINITION.
     "TYPES: ts_ TYPE string.
     TYPES: BEGIN OF ts_,
              p TYPE string,
+             v TYPE string,
            END OF ts_.
     TYPES: tt_ TYPE STANDARD TABLE OF ts_ WITH DEFAULT KEY.
 
     METHODS preview_list IMPORTING ir_ TYPE REF TO tt_ RETURNING VALUE(rv_) TYPE sy-ucomm.
     METHODS import RETURNING VALUE(rt_) TYPE tt_.
-    METHODS go_book.
     METHODS go.
-    METHODS query IMPORTING iv_ TYPE guid.
     DATA: gv_msg.
 ENDCLASS.
 
@@ -29,15 +28,11 @@ PARAMETERS: q TYPE guid DEFAULT '000D3A7A9A961EDE9CD283424391F4F2' . "ABAP is pr
 
 CLASS lcl_ IMPLEMENTATION.
 
-  METHOD query.
-
-  ENDMETHOD.
-
   METHOD import.
     DATA: lt_ft TYPE filetable.
     DATA: lv_rc TYPE i.
 
-    DATA(lv_default_filename) = |*embed*.tsv|.
+    DATA(lv_default_filename) = |sample*.tsv|.
 
     cl_gui_frontend_services=>file_open_dialog(
       EXPORTING
@@ -100,14 +95,7 @@ CLASS lcl_ IMPLEMENTATION.
    ).
     IF sy-subrc <> 0.
       MESSAGE e000 WITH 'File Error' INTO gv_msg.
-      zcx_s=>raise( sy ).
-      RETURN.
-    ENDIF.
-
-*   MODIFY mt_ FROM VALUE #( runid = p_runid ) TRANSPORTING runid WHERE runid NE p_runid.
-*    p_file = me->get_filename( p_runid ).
-
-    IF lt_ IS INITIAL.
+      "zcx_s=>raise( sy ).
       RETURN.
     ENDIF.
 
@@ -116,9 +104,9 @@ CLASS lcl_ IMPLEMENTATION.
     ENDIF.
 
     DATA(lv_exit_command) = me->preview_list( REF #( lt_ ) ).
-    IF lv_exit_command NE 'OK'.
-      RETURN.
-    ENDIF.
+*    IF lv_exit_command NE 'OK'.
+*      RETURN.
+*    ENDIF.
 *--------------------------------------------------------------------*
     rt_ = lt_.
 
@@ -126,107 +114,52 @@ CLASS lcl_ IMPLEMENTATION.
 
   METHOD preview_list.
 
-    rv_ = NEW zcl_eui_alv(
-      ir_table   = ir_
-      is_layout  = VALUE #( zebra = 'X' no_toolbar = 'X' )
-      it_mod_catalog = VALUE lvc_t_fcat( ( fieldname = 'PROCESSED' tech = 'X' edit = 'X' ) )
-    )->popup( )->show( io_handler = me ).
-
-  ENDMETHOD.
-
-  METHOD go_book.
-    DATA(lt_book) = me->import( ).
-
-    IF lt_book IS INITIAL.
-      RETURN.
-    ENDIF.
-
-    DATA: lt_ TYPE tt_.
-    DATA: lv_line TYPE text256.
-    DATA: lv_text TYPE string.
-    LOOP AT lt_book REFERENCE INTO DATA(lr_b).
-      lv_line = lr_b->p.
-      IF lv_line(2) = '# ' OR
-         lv_line(3) = '## ' OR
-         lv_line(4) = '### '.
-        APPEND VALUE #( p = lv_text ) TO lt_.
-        CLEAR lv_text.
-      ENDIF.
-      lv_text = |{ lv_text }{ lr_b->p }{ cr_lf }|.
-    ENDLOOP.
-*--------------------------------------------------------------------*
-    DATA(lo_l) = zcl_vdb_002_lib=>new( p_bid ).
-    DATA(lo_e) = zcl_vdb_002_embedding=>new( p_bid ).
-    DATA(lo_s) = zcl_vdb_002_stopwatch=>new( ).
-
-    DATA(lo_progress) = zcl_vdb_000_progress=>new(
-                          iv_total = lines( lt_ )
-                          iv_step  = ( lines( lt_ ) / 10 )
-                          iv_text  = 'Embedding'
-    ).
-    lo_s->reset( ).
-    LOOP AT lt_ REFERENCE INTO DATA(lr_).
-      lo_progress->next( ).
-      IF lr_->p IS INITIAL.
-        CONTINUE.
-      ENDIF.
-      DATA(lx_) = lo_e->embed( lr_->p ).
-      DATA(ls_v) = lo_l->create_vector(
-                     ix_        = lx_
-                     iv_payload = lr_->p
+*    rv_ = NEW zcl_eui_alv(
+*      ir_table   = ir_
+*      is_layout  = VALUE #( zebra = 'X' no_toolbar = 'X' )
+*      it_mod_catalog = VALUE lvc_t_fcat( ( fieldname = 'PROCESSED' tech = 'X' edit = 'X' ) )
+*    )->popup( )->show( io_handler = me ).
+    DATA: lo_alv TYPE REF TO cl_salv_table.
+    TRY.
+        " Create an ALV grid instance
+        cl_salv_table=>factory( IMPORTING r_salv_table   = lo_alv
+                                CHANGING  t_table        = ir_->*
                    ).
-      lo_l->save_vector( ls_v ).
-      lo_s->next( ).
-    ENDLOOP.
 
-    DATA(ls_stats) = lo_s->get_stats( ).
+        lo_alv->get_display_settings( )->set_striped_pattern( 'X' ).
+        lo_alv->get_functions( )->set_all( abap_true ).
+        lo_alv->display( ).
+      CATCH cx_salv_msg INTO DATA(lx_salv_msg).
+        " Exception handling
+        " Handle the exception as per your program's error handling strategy
+    ENDTRY.
 
-    cl_demo_output=>display( ls_stats ).
+    " Set the return value as needed
+    rv_ = 'OK'.
 
   ENDMETHOD.
 
   METHOD go.
-    DATA(lt_txt) = me->import( ).
+    DATA:lt_s TYPE string_t.
+    DATA:lt_v TYPE zcl_vdb_002_lib=>tt_embedding.
+    DATA(lt_) = me->import( ).
 
-    IF lt_txt IS INITIAL.
+    IF lt_ IS INITIAL.
       RETURN.
     ENDIF.
-
-*    DATA: lt_ TYPE tt_.
-*    DATA: lv_line TYPE text256.
-*    DATA: lv_text TYPE string.
-    LOOP AT lt_txt REFERENCE INTO DATA(lr_b).
-      REPLACE ALL OCCURRENCES OF '\n' IN lr_b->p WITH cr_lf.
-    ENDLOOP.
 *--------------------------------------------------------------------*
     DATA(lo_l) = zcl_vdb_002_lib=>new( p_bid ).
-    DATA(lo_e) = zcl_vdb_002_embedding=>new( p_bid ).
-    "DATA(lo_e) = zcl_vdb_002_embedding_full=>new( p_bid ).
-    DATA(lo_s) = zcl_vdb_002_stopwatch=>new( ).
 
-    DATA(lo_progress) = zcl_vdb_000_progress=>new(
-                          iv_total = lines( lt_txt )
-                          iv_step  = ( lines( lt_txt ) / 10 )
-                          iv_text  = 'Embedding'
-    ).
-    lo_s->reset( ).
-    LOOP AT lt_txt FROM 500 REFERENCE INTO DATA(lr_).
-      lo_progress->next( ).
-      IF lr_->p IS INITIAL.
-        CONTINUE.
-      ENDIF.
-      DATA(lx_) = lo_e->embed( lr_->p ).
+    LOOP AT lt_ REFERENCE INTO DATA(lr_).
+      DATA(lx_v) = lo_l->quantize_from_string( lr_->v ).
       DATA(ls_v) = lo_l->create_vector(
-                     ix_        = lx_
+                     ix_        = lx_v
                      iv_payload = lr_->p
                    ).
       lo_l->save_vector( ls_v ).
-      lo_s->next( ).
     ENDLOOP.
 
-    DATA(ls_stats) = lo_s->get_stats( ).
-
-    cl_demo_output=>display( ls_stats ).
+    lo_l->regen_recal_hash_and_reindex( p_bid ).
 
   ENDMETHOD.
 
@@ -238,7 +171,4 @@ AT SELECTION-SCREEN.
     WHEN 'ONLI'.
       DATA(lo_) = NEW lcl_( ).
       lo_->go( ).
-    WHEN 'Q'.
-      lo_ = NEW lcl_( ).
-      lo_->query( q ).
   ENDCASE.

@@ -13,24 +13,22 @@ CLASS zcl_vdb_002_lib DEFINITION
         i4 TYPE sap_bool, "random hyperplane 16
         i5 TYPE sap_bool, "fast fold 16
       END OF ts_index_bypass .
-    DATA: mv_hp_start TYPE i.
-    DATA: mv_hp_end   TYPE i.
-    DATA: mv_hr_start TYPE i.
-    DATA: mv_hr_end   TYPE i.
     TYPES ts_dp TYPE i .
     TYPES:
       tt_dp TYPE STANDARD TABLE OF ts_dp WITH DEFAULT KEY .
     TYPES ts_set TYPE zvdb_002_set .
     TYPES:
       tt_set TYPE STANDARD TABLE OF ts_set WITH KEY id .
-    TYPES ty_coordinate TYPE p LENGTH 10 DECIMALS 9."ts_embedding TYPE zif_peng_azoai_sdk_typinternal=>ty_coordinate .
+    TYPES:
+      ty_coordinate TYPE p LENGTH 10 DECIMALS 9 .     "ts_embedding TYPE zif_peng_azoai_sdk_typinternal=>ty_coordinate .
     TYPES:
       BEGIN OF ty_embedding,
         object    TYPE string,
         index     TYPE i,
         embedding TYPE STANDARD TABLE OF ty_coordinate WITH DEFAULT KEY,
-      END OF ty_embedding,
-      tty_embedding TYPE STANDARD TABLE OF ty_embedding WITH DEFAULT KEY.
+      END OF ty_embedding .
+    TYPES:
+      tty_embedding TYPE STANDARD TABLE OF ty_embedding WITH DEFAULT KEY .
     TYPES tt_embedding TYPE ty_embedding-embedding .
     TYPES ts_vector TYPE zvdb_002_vector .
     TYPES:
@@ -88,14 +86,15 @@ CLASS zcl_vdb_002_lib DEFINITION
         hh TYPE ty_b24,
         hr TYPE ty_b24,
       END OF ts_hh_hr .
-    TYPES: BEGIN OF ts_hash_fast_fold,
+    TYPES:
+      BEGIN OF ts_hash_fast_fold,
              hff2  TYPE ty_b16,
              hff3  TYPE ty_b24,
              hff6  TYPE ty_b48,
              hff12 TYPE ty_12,
              hff24 TYPE ty_24,
              hff48 TYPE ty_48,
-           END OF ts_hash_fast_fold.
+      END OF ts_hash_fast_fold .
     TYPES:
       BEGIN OF ts_hash,
         hh1 TYPE zvdb_002_vector-hh1,
@@ -136,6 +135,10 @@ CLASS zcl_vdb_002_lib DEFINITION
     TYPES:
       ttr_tv TYPE RANGE OF tv .
 
+    DATA mv_hp_start TYPE i .
+    DATA mv_hp_end TYPE i .
+    DATA mv_hr_start TYPE i .
+    DATA mv_hr_end TYPE i .
     DATA ms_ib TYPE ts_index_bypass .
     DATA mv_bid TYPE zvdb_002_vector-bid .
     CLASS-DATA gt_dp_8 TYPE tt_dp .
@@ -235,7 +238,7 @@ CLASS zcl_vdb_002_lib DEFINITION
       IMPORTING
         !iv_       TYPE zvdb_002_vector-bid
         !is_       TYPE ts_index_bypass OPTIONAL
-          PREFERRED PARAMETER !iv_
+          PREFERRED PARAMETER iv_
       RETURNING
         VALUE(ro_) TYPE REF TO zcl_vdb_002_lib .
     METHODS bf
@@ -287,7 +290,7 @@ CLASS zcl_vdb_002_lib DEFINITION
       IMPORTING
         !iv_ TYPE zvdb_002_vector-bid
         !is_ TYPE ts_index_bypass OPTIONAL
-          PREFERRED PARAMETER !iv_.
+          PREFERRED PARAMETER iv_ .
     METHODS create_vector
       IMPORTING
         !ix_        TYPE tv
@@ -307,12 +310,6 @@ CLASS zcl_vdb_002_lib DEFINITION
       RETURNING
         VALUE(rv_) TYPE i .
     METHODS dp_1536
-      IMPORTING
-        !ix_0      TYPE zvdb_002e_raw192
-        !ix_1      TYPE zvdb_002e_raw192
-      RETURNING
-        VALUE(rv_) TYPE i .
-    METHODS dp_1536_bak
       IMPORTING
         !ix_0      TYPE zvdb_002e_raw192
         !ix_1      TYPE zvdb_002e_raw192
@@ -368,8 +365,7 @@ CLASS zcl_vdb_002_lib DEFINITION
       IMPORTING
         !ix_       TYPE tv
       RETURNING
-        VALUE(rs_) TYPE ts_hash_fast_fold.
-
+        VALUE(rs_) TYPE ts_hash_fast_fold .
     METHODS hash
       IMPORTING
         !ix_       TYPE tv
@@ -462,7 +458,7 @@ CLASS zcl_vdb_002_lib DEFINITION
       IMPORTING
         !iv_ TYPE zvdb_002_vector-bid
         !is_ TYPE ts_index_bypass OPTIONAL
-          PREFERRED PARAMETER !iv_.
+          PREFERRED PARAMETER iv_ .
     METHODS reset_hp .
     METHODS save_vector
       IMPORTING
@@ -479,6 +475,11 @@ CLASS zcl_vdb_002_lib DEFINITION
         !it_        TYPE tt_vector
       RETURNING
         VALUE(rtr_) TYPE ttr_tv .
+    METHODS quantize_from_string
+      IMPORTING
+        !iv_       TYPE string
+      RETURNING
+        VALUE(rx_) TYPE tv .
   PROTECTED SECTION.
   PRIVATE SECTION.
 
@@ -487,6 +488,12 @@ CLASS zcl_vdb_002_lib DEFINITION
     CONSTANTS:
       gx_16_rra(32) TYPE x VALUE '8000400020001000080004000200010000800040002000100008000400020001' ##NO_TEXT.          "16 bit rotation right look up table
 
+    METHODS dp_1536_bak
+      IMPORTING
+        !ix_0      TYPE zvdb_002e_raw192
+        !ix_1      TYPE zvdb_002e_raw192
+      RETURNING
+        VALUE(rv_) TYPE i .
 *    CONSTANTS:
 *      gx_24_rra(72) TYPE x VALUE '800000400000200000100000080000040000020000010000008000004000002000001000000800000400000200000100000080000040000020000010000008000004000002000001'. "24 bit rotation right look up table
     CLASS-METHODS init_class .
@@ -494,7 +501,7 @@ CLASS zcl_vdb_002_lib DEFINITION
       IMPORTING
         !iv_ TYPE zvdb_002_vector-bid
         !is_ TYPE ts_index_bypass OPTIONAL
-          PREFERRED PARAMETER !iv_.
+          PREFERRED PARAMETER iv_ .
 ENDCLASS.
 
 
@@ -1593,6 +1600,19 @@ CLASS ZCL_VDB_002_LIB IMPLEMENTATION.
         SET BIT sy-tabix OF rx_ TO 1.
       ENDIF.
     ENDLOOP.
+
+  ENDMETHOD.
+
+
+  METHOD quantize_from_string.
+    TYPES: tt_f TYPE TABLE OF f WITH DEFAULT KEY.
+    DATA:lt_s TYPE string_t.
+    DATA:lt_f TYPE tt_f.
+    DATA:lt_v TYPE tt_embedding.
+    SPLIT iv_ AT space INTO TABLE lt_s.
+    lt_f = CORRESPONDING #( lt_s ).
+    lt_v = CORRESPONDING #( lt_f ).
+    rx_ = me->quantize( lt_v ).
 
   ENDMETHOD.
 

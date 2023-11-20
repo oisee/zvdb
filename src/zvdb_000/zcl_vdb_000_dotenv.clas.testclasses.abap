@@ -23,7 +23,7 @@ CLASS lcl_ IMPLEMENTATION.
   ENDMETHOD.
   METHOD get_azure_openai.
     DATA lv_path TYPE string.
-    DATA rs_ TYPE zcl_vdb_000_dotenv=>ts_openai.
+    DATA rs_ TYPE zcl_vdb_000_dotenv=>ts_env.
     rs_ = zcl_vdb_000_dotenv=>get_azure_openai( lv_path ).
   ENDMETHOD.
 

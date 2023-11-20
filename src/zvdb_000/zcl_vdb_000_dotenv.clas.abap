@@ -4,7 +4,14 @@ CLASS zcl_vdb_000_dotenv DEFINITION
   CREATE PRIVATE.
 
   PUBLIC SECTION.
-    TYPES: ts_openai TYPE zif_oai_types=>ts_env.
+    TYPES: BEGIN OF ts_env,
+             api_url       TYPE string,
+             api_ver       TYPE string,
+             api_key       TYPE string,
+             api_dep       TYPE string,
+             api_dep_embed TYPE string,
+           END OF ts_env.
+*    TYPES: ts_openai TYPE zif_oai_types=>ts_env.
 
     TYPES: BEGIN OF ts_kv,
              k TYPE string,
@@ -34,7 +41,7 @@ CLASS zcl_vdb_000_dotenv DEFINITION
 
     CLASS-METHODS: get_azure_openai
       IMPORTING iv_path    TYPE string DEFAULT 'C:\TEMP\.ENV'
-      RETURNING VALUE(rs_) TYPE ts_openai.
+      RETURNING VALUE(rs_) TYPE ts_env.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -65,16 +72,13 @@ CLASS ZCL_VDB_000_DOTENV IMPLEMENTATION.
     lo_ = NEW zcl_vdb_000_dotenv( iv_path ).
 
 * create a structure to hold the environmental variables
-    rs_ = VALUE ts_openai(
+    rs_ = VALUE ts_env(
       api_url       = lo_->v( k = 'API_URL' )
       api_ver       = lo_->v( k = 'API_VER' )
       api_key       = lo_->v( k = 'API_KEY' )
-      api_dep       = lo_->v( k = 'API_DEPID' )
-      api_dep_embed = lo_->v( k = 'API_DEPID_EMBED' )
-      depid         = lo_->v( k = 'DEPID' )
+      api_dep       = lo_->v( k = 'API_DEP' )
+      api_dep_embed = lo_->v( k = 'API_DEP_EMBED' )
     ).
-    rs_-depid = COND #( WHEN rs_-depid IS INITIAL THEN rs_-api_dep
-                        ELSE rs_-depid ).
 
   ENDMETHOD.
 

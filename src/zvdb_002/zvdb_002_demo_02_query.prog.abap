@@ -3,7 +3,7 @@
 *&---------------------------------------------------------------------*
 *&
 *&---------------------------------------------------------------------*
-REPORT zvdb_002_demo_01_query MESSAGE-ID zvdb_002.
+REPORT zvdb_002_demo_02_query MESSAGE-ID zvdb_002.
 
 TABLES: sscrfields.
 
@@ -99,27 +99,23 @@ CLASS lcl_ IMPLEMENTATION.
   METHOD query.
     DATA(lo_sw) = zcl_vdb_002_stopwatch=>new( ).
 
-    DATA(lo_l) = zcl_vdb_002_lib=>new( iv_ = p_bid ).
-    DATA(ls_v) = lo_l->read_vector( q ).
+    DATA(lo_lib) = zcl_vdb_002_lib=>new( iv_ = p_bid ).
+    DATA(ls_v) = lo_lib->read_vector( q ).
     lo_sw->reset( ).
-    DO 5 TIMES.
-      DATA(lt_q) = lo_l->query( ls_v-q1b ).
+    DO 5 TIMES. "doing 5 times to get average
+      DATA(lt_q) = lo_lib->query( ls_v-q1b ).
       lo_sw->next( ).
     ENDDO.
     cl_demo_output=>display( lo_sw->get_stats( ) ).
 
-    APPEND LINES OF lt_q TO lt_q.
-    APPEND LINES OF lt_q TO lt_q.
-    APPEND LINES OF lt_q TO lt_q.
-    APPEND LINES OF lt_q TO lt_q.
-    APPEND LINES OF lt_q TO lt_q.
-    APPEND LINES OF lt_q TO lt_q.
-    APPEND LINES OF lt_q TO lt_q.
+*    APPEND LINES OF lt_q TO lt_q.
+*    APPEND LINES OF lt_q TO lt_q.
+*    APPEND LINES OF lt_q TO lt_q.
 
     DATA(lo_s) = zcl_vdb_002_stopwatch=>new( ).
     lo_s->reset( ).
     DO 10 TIMES.
-      lo_l->bf_in_tt( EXPORTING ix_ = ls_v-q1b CHANGING ct_ = lt_q ).
+      lo_lib->bf_in_tt( EXPORTING ix_ = ls_v-q1b CHANGING ct_ = lt_q ).
       lo_s->next( ).
     ENDDO.
 
@@ -130,7 +126,7 @@ CLASS lcl_ IMPLEMENTATION.
     cl_demo_output=>write( |One dot product for two 1536 dimensional vectors:{ ls_batch-average_f }| ).
     cl_demo_output=>display( ).
 
-    lo_l->qf_in_tt( EXPORTING is_ = ls_v CHANGING ct_ = lt_q ).
+    lo_lib->qf_in_tt( EXPORTING is_ = ls_v CHANGING ct_ = lt_q ).
     SORT lt_q BY rank DESCENDING.
 
     DATA: lo_alv     TYPE REF TO cl_salv_table,
@@ -158,7 +154,8 @@ CLASS lcl_ IMPLEMENTATION.
         lo_columns->get_column( 'RANK2' )->set_long_text( 'Rank 2' ).
 
         " Additional settings like layout, variant, filter, sort can be set here
-
+        lo_alv->get_display_settings( )->set_striped_pattern( 'X' ).
+        lo_alv->get_functions( )->set_all( abap_true ).
         " Display the ALV
         lo_alv->display( ).
 
@@ -167,38 +164,31 @@ CLASS lcl_ IMPLEMENTATION.
     ENDTRY.
 
   ENDMETHOD.
-  METHOD qquery.
+  METHOD qquery. "query with "quck-force" ranking
     DATA(lo_sw) = zcl_vdb_002_stopwatch=>new( ).
-    DATA(lo_l) = zcl_vdb_002_lib=>new( iv_ = p_bid ).
-    DATA(ls_v) = lo_l->read_vector( q ).
+    DATA(lo_lib) = zcl_vdb_002_lib=>new( iv_ = p_bid ).
+    DATA(ls_v) = lo_lib->read_vector( q ).
     lo_sw->reset( ).
     DO 5 TIMES.
-      DATA(lt_q) = lo_l->query( ls_v-q1b ).
+      DATA(lt_q) = lo_lib->query( ls_v-q1b ).
       lo_sw->next( ).
     ENDDO.
     cl_demo_output=>display( lo_sw->get_stats( ) ).
 
-    APPEND LINES OF lt_q TO lt_q.
-    APPEND LINES OF lt_q TO lt_q.
-    APPEND LINES OF lt_q TO lt_q.
-    APPEND LINES OF lt_q TO lt_q.
-
     DATA(lo_s) = zcl_vdb_002_stopwatch=>new( ).
     lo_s->reset( ).
     DO 10 TIMES.
-      lo_l->qf_in_tt( EXPORTING is_ = ls_v CHANGING ct_ = lt_q ).
+      lo_lib->qf_in_tt( EXPORTING is_ = ls_v CHANGING ct_ = lt_q ).
       lo_s->next( ).
     ENDDO.
 
     DATA(ls_batch) = lo_s->get_stats_for_batch( lines( lt_q ) ).
 
     cl_demo_output=>write( ls_batch ).
-*    cl_demo_output=>write( |Stats above is for { ls_batch-lines } batches, each of { lines( lt_q ) } lines,| ).
-*    cl_demo_output=>write( |In total:{ ls_batch-lines * lines( lt_q ) } gives average time ms per line: { ls_batch-average }| ).
     cl_demo_output=>write( |One dot product for 4 hashes: 48 dimensional vectors):{ ls_batch-average_f }| ).
     cl_demo_output=>display( ).
 
-    lo_l->bf_in_tt( EXPORTING ix_ = ls_v-q1b CHANGING ct_ = lt_q ).
+    lo_lib->bf_in_tt( EXPORTING ix_ = ls_v-q1b CHANGING ct_ = lt_q ).
     SORT lt_q BY rank2 DESCENDING.
 
     DATA: lo_alv     TYPE REF TO cl_salv_table,
@@ -226,7 +216,8 @@ CLASS lcl_ IMPLEMENTATION.
         lo_columns->get_column( 'RANK2' )->set_long_text( 'Rank 2' ).
 
         " Additional settings like layout, variant, filter, sort can be set here
-
+        lo_alv->get_display_settings( )->set_striped_pattern( 'X' ).
+        lo_alv->get_functions( )->set_all( abap_true ).
         " Display the ALV
         lo_alv->display( ).
 
@@ -235,15 +226,15 @@ CLASS lcl_ IMPLEMENTATION.
     ENDTRY.
   ENDMETHOD.
 
-  METHOD q.
-    DATA(lo_l) = zcl_vdb_002_lib=>new( p_bid ).
-    DATA(ls_q) = lo_l->read_vector( q ).
-    DATA(ls_h) = lo_l->hash_s( ls_q-q1b ).
+  METHOD q. "query with tracking - how this vector was selected from the DB.
+    DATA(lo_lib) = zcl_vdb_002_lib=>new( p_bid ).
+    DATA(ls_q) = lo_lib->read_vector( q ).
+    DATA(ls_h) = lo_lib->hash_s( ls_q-q1b ).
 
-    DATA(ltr_hh1) = lo_l->hamming_8( ls_h-hh1 ).
-    DATA(ltr_hh2) = lo_l->hamming_16( ls_h-hh2 ).
-    DATA(ltr_hr1) = lo_l->hamming_8( ls_h-hr1 ).
-    DATA(ltr_hr2) = lo_l->hamming_16( ls_h-hr2 ).
+    DATA(ltr_hh1) = lo_lib->hamming_8( ls_h-hh1 ).
+    DATA(ltr_hh2) = lo_lib->hamming_16( ls_h-hh2 ).
+    DATA(ltr_hr1) = lo_lib->hamming_8( ls_h-hr1 ).
+    DATA(ltr_hr2) = lo_lib->hamming_16( ls_h-hr2 ).
 
 * #TODO:search by flags (checkboxes, or, highlite indicate what was retrieval for each)
     DATA:lt_bf    TYPE zcl_vdb_002_lib=>tt_vector.
@@ -337,31 +328,31 @@ CLASS lcl_ IMPLEMENTATION.
 *      RETURN.
 *    ENDIF.
 *--------------------------------------------------------------------*
-    lo_l->bf_in_tt( EXPORTING ix_ = ls_q-q1b
+    lo_lib->bf_in_tt( EXPORTING ix_ = ls_q-q1b
                     CHANGING  ct_ = lt_bf
     ).
-    lo_l->bf_in_tt( EXPORTING ix_ = ls_q-q1b
+    lo_lib->bf_in_tt( EXPORTING ix_ = ls_q-q1b
                     CHANGING  ct_ = lt_h8
     ).
-    lo_l->bf_in_tt( EXPORTING ix_ = ls_q-q1b
+    lo_lib->bf_in_tt( EXPORTING ix_ = ls_q-q1b
                     CHANGING  ct_ = lt_h8ha
     ).
-    lo_l->bf_in_tt( EXPORTING ix_ = ls_q-q1b
+    lo_lib->bf_in_tt( EXPORTING ix_ = ls_q-q1b
                     CHANGING  ct_ = lt_h16
     ).
-    lo_l->bf_in_tt( EXPORTING ix_ = ls_q-q1b
+    lo_lib->bf_in_tt( EXPORTING ix_ = ls_q-q1b
                     CHANGING  ct_ = lt_h16ha
     ).
-    lo_l->bf_in_tt( EXPORTING ix_ = ls_q-q1b
+    lo_lib->bf_in_tt( EXPORTING ix_ = ls_q-q1b
                     CHANGING  ct_ = lt_r8
     ).
-    lo_l->bf_in_tt( EXPORTING ix_ = ls_q-q1b
+    lo_lib->bf_in_tt( EXPORTING ix_ = ls_q-q1b
                     CHANGING  ct_ = lt_r8ha
     ).
-    lo_l->bf_in_tt( EXPORTING ix_ = ls_q-q1b
+    lo_lib->bf_in_tt( EXPORTING ix_ = ls_q-q1b
                     CHANGING  ct_ = lt_r16
     ).
-    lo_l->bf_in_tt( EXPORTING ix_ = ls_q-q1b
+    lo_lib->bf_in_tt( EXPORTING ix_ = ls_q-q1b
                     CHANGING  ct_ = lt_r16ha
     ).
 *--------------------------------------------------------------------*
@@ -389,7 +380,7 @@ CLASS lcl_ IMPLEMENTATION.
     SORT lt_alv BY id DESCENDING d ASCENDING.
     DELETE ADJACENT DUPLICATES FROM lt_alv COMPARING id.
 
-*    data(lv_q_fh)     = lo_l->hash_fast_fold( ls_q-q1b ).
+*    data(lv_q_fh)     = lo_lib->hash_fast_fold( ls_q-q1b ).
 
     LOOP AT lt_alv REFERENCE INTO DATA(lr_alv).
       DATA(lr_h8) = REF #(    lt_h8[    id = lr_alv->id ] OPTIONAL ).
@@ -440,24 +431,25 @@ CLASS lcl_ IMPLEMENTATION.
         lr_alv->bf_only = 'X'.
       ENDIF.
 
-      lr_alv->dh1 = lo_l->dp_8(
+      lr_alv->dh1 = lo_lib->dp_8(
                      ix_0 = ls_q-hh1
                      ix_1 = lr_alv->hh1
                    ).
-      lr_alv->dh2 = lo_l->dp_16(
+      lr_alv->dh2 = lo_lib->dp_16(
                      ix_0 = ls_q-hh2
                      ix_1 = lr_alv->hh2
                    ).
-      lr_alv->dr1 = lo_l->dp_8(
+      lr_alv->dr1 = lo_lib->dp_8(
                      ix_0 = ls_q-hr1
                      ix_1 = lr_alv->hr1
                    ).
-      lr_alv->dr2 = lo_l->dp_16(
+      lr_alv->dr2 = lo_lib->dp_16(
                      ix_0 = ls_q-hr2
                      ix_1 = lr_alv->hr2
                    ).
 
     ENDLOOP.
+    SORT lt_alv BY rank DESCENDING.
 *--------------------------------------------------------------------*
     DATA: lo_alv     TYPE REF TO cl_salv_table,
           lo_columns TYPE REF TO cl_salv_columns_table.
@@ -485,6 +477,7 @@ CLASS lcl_ IMPLEMENTATION.
         lo_columns->get_column( 'DH2'        )->set_long_text( 'DH2' ).
         lo_columns->get_column( 'DR1'        )->set_long_text( 'DR1' ).
         lo_columns->get_column( 'DR2'        )->set_long_text( 'DR2' ).
+        lo_columns->get_column( 'RANK'       )->set_long_text( 'RANK1 BF' ).
         lo_columns->get_column( 'RANK2'      )->set_long_text( 'RANK2 QF' ).
 *--------------------------------------------------------------------*
         lo_columns->get_column( 'FH'         )->set_long_text( 'FH'      ).
@@ -505,6 +498,8 @@ CLASS lcl_ IMPLEMENTATION.
         lo_columns->get_column( 'BF'         )->set_long_text( 'BF'      ).
         lo_columns->get_column( 'BF_ONLY'    )->set_long_text( 'BF Only' ).
         " Additional settings (layout, variant, filter, sort) can be configured here
+        lo_alv->get_display_settings( )->set_striped_pattern( 'X' ).
+        lo_alv->get_functions( )->set_all( abap_true ).
         " Display the ALV
         lo_alv->display( ).
 
@@ -568,9 +563,9 @@ CLASS lcl_ IMPLEMENTATION.
     COMMIT WORK AND WAIT.
     DATA(lx_a) = lo_e->answer( lv_text ).
 *--------------------------------------------------------------------*
-    DATA(lo_l) = zcl_vdb_002_lib=>new( p_bid ).
-    DATA(lt_q) = lo_l->query_by_id( lv_id_q ).
-    DATA(lt_a) = lo_l->query( lx_a ).
+    DATA(lo_lib) = zcl_vdb_002_lib=>new( p_bid ).
+    DATA(lt_q) = lo_lib->query_by_id( lv_id_q ).
+    DATA(lt_a) = lo_lib->query( lx_a ).
 
     DATA(lt_all) = lt_q.
     APPEND LINES OF lt_a TO lt_all.
@@ -606,6 +601,12 @@ INITIALIZATION.
   sscrfields-functxt_02 = TEXT-f02.
   sscrfields-functxt_03 = TEXT-f03.
   sscrfields-functxt_04 = TEXT-f04.
+
+  SELECT SINGLE id
+    FROM zvdb_002_vector
+    WHERE bid = @p_bid AND
+          id IS NOT NULL
+    INTO @q.
 
 AT SELECTION-SCREEN.
   DATA(lo_) = NEW lcl_( ).

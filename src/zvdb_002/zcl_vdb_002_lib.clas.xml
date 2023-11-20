@@ -49,6 +49,11 @@
      <DESCRIPT>Brute Force vs Table (return new table)</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
+     <CMPNAME>BIT_COUNT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>count bits</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
      <CMPNAME>CLASS_CONSTRUCTOR</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>CLASS_CONSTRUCTOR</DESCRIPT>
@@ -59,19 +64,44 @@
      <DESCRIPT>CONSTRUCTOR</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
+     <CMPNAME>CREATE_VECTOR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Prepare Vector for saving to the DB (HASH, GUID, etc)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
      <CMPNAME>HASH</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Hyperplane Hashing</DESCRIPT>
+     <DESCRIPT>Hash as x3 + x3, Hyperplane Hashing</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>HASH_S</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>as struct</DESCRIPT>
+     <DESCRIPT>Hash as struct</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>QF_IN_TT</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Quick Force in Table (in-place, changing)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>QUERY</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Query DB with q1b vector (x192)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>QUERY_BY_ID</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Query DB with Vector GUID</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>RANDOM_VECTOR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Random q1b Vector for random hyperplane hashing</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>RANK_ALL_TO_AUTOCALIBRATE_A</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Agerage</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>RANK_ALL_TO_AUTOCALIBRATE_M</CMPNAME>

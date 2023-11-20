@@ -100,6 +100,8 @@ API_DEP=<deployment_id>
 API_DEP_EMBED=<deployment_id_embedding_model>
 ```
 
+<details>
+<summary>show code...</summary>
 
 ```ABAP
     DATA(lo_) = zcl_vdb_000_dotenv=>new( lv_path ).
@@ -114,8 +116,13 @@ API_DEP_EMBED=<deployment_id_embedding_model>
     ).
 
 ```
+
+</details>
+
 ## Installation
 
 Install this repository using [abapGit](https://github.com/abapGit/abapGit#abapgit).
+
+run the report
 
 © 2023 Alice Vinogradova. For more information, see the [LICENSE](LICENSE) file in this repository.

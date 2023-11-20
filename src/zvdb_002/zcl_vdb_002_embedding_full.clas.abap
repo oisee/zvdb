@@ -16,14 +16,14 @@ CLASS zcl_vdb_002_embedding_full DEFINITION
       EXPORTING
         !ev_       TYPE string
       RETURNING
-        VALUE(rx_) TYPE zcl_vdb_001_lib=>ts_vector-q1b .
+        VALUE(rx_) TYPE zcl_vdb_002_lib=>ts_vector-q1b .
     METHODS rag
       IMPORTING
         !iv_       TYPE string
-        !it_       TYPE zcl_vdb_001_lib=>tt_vector
+        !it_       TYPE zcl_vdb_002_lib=>tt_vector
       EXPORTING
         !ev_prompt TYPE string
-        !et_used   TYPE zcl_vdb_001_lib=>tt_vector
+        !et_used   TYPE zcl_vdb_002_lib=>tt_vector
       RETURNING
         VALUE(rv_) TYPE string .
     METHODS answer_and_save
@@ -32,24 +32,24 @@ CLASS zcl_vdb_002_embedding_full DEFINITION
       EXPORTING
         !ev_       TYPE string
       RETURNING
-        VALUE(rs_) TYPE zcl_vdb_001_lib=>ts_vector .
+        VALUE(rs_) TYPE zcl_vdb_002_lib=>ts_vector .
     METHODS embed
       IMPORTING
         !iv_       TYPE string
       RETURNING
-        VALUE(rx_) TYPE zcl_vdb_001_lib=>ts_vector-q1b .
+        VALUE(rx_) TYPE zcl_vdb_002_lib=>ts_vector-q1b .
     METHODS embed_and_save
       IMPORTING
         !iv_       TYPE string
       RETURNING
-        VALUE(rs_) TYPE zcl_vdb_001_lib=>ts_vector .
+        VALUE(rs_) TYPE zcl_vdb_002_lib=>ts_vector .
   PROTECTED SECTION.
   PRIVATE SECTION.
 
     DATA: mo_env TYPE REF TO zcl_vdb_000_dotenv.
     DATA: mo_sdk TYPE REF TO zif_peng_azoai_sdk.
-    DATA: mo_lib TYPE REF TO zcl_vdb_001_lib.
-    DATA: ms_aoi TYPE zcl_vdb_000_dotenv=>ts_openai.
+    DATA: mo_lib TYPE REF TO zcl_vdb_002_lib.
+    DATA: ms_aoi TYPE zcl_vdb_000_dotenv=>ts_env.
     METHODS: constructor
       IMPORTING iv_ TYPE zvdb_002_vector-bid.
 ENDCLASS.
@@ -113,7 +113,7 @@ CLASS ZCL_VDB_002_EMBEDDING_FULL IMPLEMENTATION.
 
   METHOD constructor.
     mo_env = zcl_vdb_000_dotenv=>new( ).
-    mo_lib = zcl_vdb_001_lib=>new( iv_  ).
+    mo_lib = zcl_vdb_002_lib=>new( iv_  ).
     ms_aoi = mo_env->get_azure_openai( ). "iv_path = 'C:\TEMP\.ENV'
 
     TRY.
@@ -222,7 +222,7 @@ CLASS ZCL_VDB_002_EMBEDDING_FULL IMPLEMENTATION.
     TRY.
         mo_sdk->chat_completions( )->create(
           EXPORTING
-            deploymentid = ms_aoi-depid
+            deploymentid = ms_aoi-api_dep
             prompts      = ls_in
           IMPORTING
              statuscode   = DATA(lv_statuscode)   " HTTP Response status code.
