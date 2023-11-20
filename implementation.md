@@ -161,7 +161,7 @@ Similar vectors are likely to end up with the same or similar hash.
 (i.e. closer in lower-dimensional space)
 
 1536d is exceptionally high:
- - 64d ([chessboard and wheat](https://en.wikipedia.org/wiki/Wheat_and_chessboard_problem#:~:text=The%20problem%20may%20be%20solved,forth%20for%20the%2064%20squares.)) is just 8x8 “image.”
+ - 64d ([chessboard and wheat](https://en.wikipedia.org/wiki/Wheat_and_chessboard_problem#:~:text=The%20problem%20may%20be%20solved,forth%20for%20the%2064%20squares.)) is just 8x8 “image”
  - 1536s is 48x32 “image”
 
 **Random hyperplanes method**
