@@ -188,10 +188,19 @@ We can use Dot Products between HASHes of two vectors to make ranking faster “
 ## Stats
 
 Some stats:
- 
+
 Optimization: initially it was ~3000μs for one floating-point unquantized comparison, using 1b quantization and bitwise operation it was optimized down to ~20μs, so we easily can do dot product (i.e.: do brute force search): for ~50000 vectors per second.
- 
+
 For RAG with the context window of 32k it is more than enough ^_^
+
+### Memory footprint
+
+Floating point variable (f) takes 8 bytes in memory, one floating-point vector: 1536 * 8 = **12288 bytes** (~12kb).
+Quantized vector takes **192 bytes**.
+
+1GB gives us 87 thousands fp-vectors or 5.5 millions quantized vectors.
+
+64 times less. Nice! =) 
 
 **Source code: \$ZVDB.**
 
