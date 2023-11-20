@@ -18,6 +18,9 @@ please provide response to the following request:
 {query from user}
 ```
 
+## How it works? Why it works? O_O
+Explained here: [implementation](implementation.md).
+
 ## Sample Usage
 
 ### Query DB:
