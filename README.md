@@ -123,8 +123,8 @@ API_DEP_EMBED=<deployment_id_embedding_model>
 
 Install this repository using [abapGit](https://github.com/abapGit/abapGit#abapgit).
 
-Run the report **zvdb_002_demo_01_upload** to upload sample vector embeddings from sample_embeddings.tsv.
-Now you can use **zvdb_002_demo_02_query** to query DB.
-**zvdb_002_demo_03_reindex** to recalibrate heuristic hyperplane hash and reindex.
+- Run the report **zvdb_002_demo_01_upload** to upload sample vector embeddings from **sample_embeddings.tsv**.
+- Now you can use **zvdb_002_demo_02_query** to query DB.
+- **zvdb_002_demo_03_reindex** to recalibrate heuristic hyperplane hash and reindex.
 
 © 2023 Alice Vinogradova. For more information, see the [LICENSE](LICENSE) file in this repository.
