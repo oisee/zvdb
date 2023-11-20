@@ -24,6 +24,9 @@ Explained here: [implementation](implementation.md).
 ## Sample Usage
 
 ### Query DB:
+<details>
+<summary>show code...</summary>
+
 ```ABAP
     DATA(lo_lib) = zcl_vdb_002_lib=>new( ). "instantiate library
 
@@ -32,7 +35,12 @@ Explained here: [implementation](implementation.md).
 
     cl_demo_output=>display( lt_q ). "observe ranked result
 ```
+</details>
+
 ### Answer with RAG:
+<details>
+<summary>show code...</summary>
+
 ```abap
     DATA(lo_e) = zcl_vdb_002_embedding_full=>new( ). "using https://github.com/microsoft/aisdkforsapabap
 
@@ -72,6 +80,8 @@ Explained here: [implementation](implementation.md).
     cl_demo_output=>write( lv_prompt ).     "check out the resulting prompt
     cl_demo_output=>display(  ).
 ```
+
+</details>
 
 ## Dependencies
 
