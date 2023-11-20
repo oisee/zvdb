@@ -16,7 +16,8 @@ So, what problem are we trying to solve?
 The library serves as a straightforward, in-house alternative to third-party vector databases. This is particularly useful if you require semantic search capabilities directly on the ABAP application server.  
 This tool can enhance your RAG (Retrieval Augmented Generation) applications, along with other heuristics.
 
-*(Disclaimer: This project was completed before the recent OpenAI developer conference, meaning it predates their introduction of "Assistant API" and "GPTs." While the latest OpenAI API now supports knowledge-based RAG without external VDBs, this solution may still be relevant, especially for RAG implementations using the Azure OpenAI API).*
+***(Disclaimer: This project was completed before the recent [OpenAI developer conference](https://openai.com/blog/new-models-and-developer-products-announced-at-devday), meaning it predates their introduction of "Assistant API" and "GPTs." While the latest OpenAI API now supports knowledge-based RAG without external VDBs, this solution may still be relevant, especially for RAG implementations using the Azure OpenAI API.
+And it is still relevant if you are going to use alternative LLM-based API: opensource llama-2/codellama/mistral/zephyr with inference API on top of https://lmstudio.ai/ or  https://ollama.ai/)***
 
 *(More info on RAG:* [*text*](https://learn.microsoft.com/en-us/azure/search/retrieval-augmented-generation-overview) [*video)*](https://www.youtube.com/watch?v=T-D1OfcDW1M)
 
@@ -33,9 +34,9 @@ Considering only the information below:
 {chunk02}
 {chunk03}
 ###
-```
 please provide a response to the following request:
 {query from user}
+```
 
 ## Validation: "GOOD ENOUGH"
 
