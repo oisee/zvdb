@@ -35,7 +35,7 @@ Quantized vector takes **192 bytes**.
 
 1GB gives us 87 thousands fp-vectors or 5.5 millions quantized vectors.
 
-64 times less. Nice! =) 
+Memory footprint is 64 times less. Nice! =) 
 
 ## Sample Usage
 
