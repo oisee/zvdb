@@ -10,6 +10,16 @@ Let me show you =)
 
 GitHub:[oisee/zvdb: ABAP Vector Search Library (github.com)](https://github.com/oisee/zvdb)
 
+<details>
+<summary> more..</summary>
+
+ - ~20μs per comparison => we search through ~50000 vectors per second. (***x150** times faster* than naïve approach)
+ - 12288 bytes (~12kb) per vector vs 192 bytes per quantized vector. (***x64** times less*)
+ - 1GB gives us 87 thousands fp-vectors or 5.5 millions quantized vectors.
+ - empirically order is stable for top 30% ranked neighbours on quntized and unquantized ada-002 embeddings - which is enough.
+
+</details>
+
 ## What problem are we trying to solve
 
 So, what problem are we trying to solve?  
@@ -67,7 +77,11 @@ Our embedding vectors are 1536-dimensional, ranging from -1 to 1. Keep in mind t
 
 The measure of similarity between two vectors - [Cosine similarity](https://colab.research.google.com/drive/13P1HKjNgO14T_iLjAsTRtegsGYblicpY)
 
-And it can be calculated as dot product (or scalar product):
+![if vectors are pointing to the same direction - the Dot Product will be close to the number of “shared” dimensions: 2.9 is close to 3](media/dot_product.png)
+
+*if vectors are pointing to the same direction - the Dot Product will be close to the number of “shared” dimensions: 2.9 is close to 3*
+
+And it can be calculated as dot product (or scalar product) for 3d:
 
 **[x1,y1,z1] • [x2,y2,z2] = x1\*x2 + y1\*y2 + z1\*z2**
 
@@ -95,7 +109,9 @@ The result must be sorted, and then the top k-nearest neighbours will be the que
 
 ![quantization%2C%20fixed%20point%20arithmetic](media/quantization.png)
 
-*quantization, fixed point arithmetic*
+*quantization, fixed point arithmetic. color -> monochrome.*
+
+Intuition on why quantization (even extreme 1bit quantization) works: you can see that the image above is still recognizable in all 3 representations.
 
 1536-dimensional embedding by ada-002:
 
@@ -105,10 +121,9 @@ Quantized:
 -   3b: [-1, -1, 2, -1, 2, 2, -1, 2, -1, -1, 2, 2, 2, 2, -1, 2, 2, 2, 2, 2, -1, 2, 2, 2, -1, 2, 2, …] -3…-3
 -   1b: [-1, -1, 1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, …] -1..+1
 
-1b: sign is enough:
+We can see that even with higher precision (8b) the values are bouncing around zero, hence high precision is not used -> not needed.
 
--   0 – is positive
--   1 – negative
+Despite the fact that we have 3 possible values: -1, 0, +1, the probability of the value landing on zero is also zero, so for our 1 bit encoding we will use:
 
 **Path A - Bitwise Operations**
 
@@ -121,19 +136,21 @@ Bitwise multiplication is XOR: With 0 and 1 as +1 and -1:
 
 Summation is just a bit-counting operation (+1 if 0 and -1 if 1):
 
-01010 xor 10101 = 11111, bit counting: -5
+01010 xor 10101 = 11111, bit counting: -5 (max distance – vectors have nothing in common, pointing to the opposite directions)
 
-(max distance – vectors have nothing in common)
+11100 xor 11100 = 00000, bit counting: +5 (min distance – vectors identical)
 
-11100 xor 11100 = 00000, bit counting: +5
+10111 xor 11111 = 01000, bit counting: +4 – 1 = 3 (some distance – almost identical – one bit of difference)
 
-(min distance – vectors identical)
+The best part, that we can do just one XOR for the whole binary string. Vector comparison will become just: 
 
-¡10111 xor 11111 = 01000, bit counting: +4 – 1 = 3
+#* data:lx_v1, lx_v2 type xtring.
 
-(some distance – almost identical – one bit of difference)
+data(lx_dp) = lx_v1 BIT-XOR lx_v2.
 
-**Validation: 1b vs 8b vs fp**
+Then we can use lookup table for bit-counting.
+
+Validation: 1b vs 8b vs fp
 
 Let’s do the BF search:
 
