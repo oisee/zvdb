@@ -13,7 +13,7 @@ GitHub:[oisee/zvdb: ABAP Vector Search Library (github.com)](https://github.com/
 <details>
 <summary> more..</summary>
 
- - ~20μs per comparison => we search through ~50000 vectors per second. (***x150** times faster* than naïve approach)
+ - ~20μs per comparison => we can search through ~50000 vectors per second. (***x150** times faster* than naïve approach)
  - 12288 bytes (~12kb) per vector vs 192 bytes per quantized vector. (***x64** times less*)
  - 1GB gives us 87 thousands fp-vectors or 5.5 millions quantized vectors.
  - empirically order is stable for top 30% ranked neighbours on quntized and unquantized ada-002 embeddings - which is enough.
@@ -127,7 +127,8 @@ Despite the fact that we have 3 possible values: -1, 0, +1, the probability of t
 
 **Path A - Bitwise Operations**
 
-Bitwise multiplication is XOR: With 0 and 1 as +1 and -1:
+How do we calculate dot product for such encoding?  
+Bitwise multiplication is **XOR**: With 0 and 1 as +1 and -1:
 
 -   **0 xor 0 = 0** *(+1 \* +1 = +1 )*
 -   **1 xor 1 = 0** *(-1 \* -1 = +1 )*
