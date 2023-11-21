@@ -1,0 +1,29 @@
+{
+    "global": {
+        "files": "/src/**/*.*"
+    },
+    "dependencies": [
+        {
+            "url": "https://github.com/microsoft/aisdkforsapabap",
+            "folder": "/deps",
+            "files": "/src/**/*.*"
+        }
+    ],
+    "syntax": {
+        "version": "v755",
+        "errorNamespace": "^(Z|Y|LCL_|TY_|LIF_)"
+    },
+    "rules": {
+        "begin_end_names": true,
+        "check_ddic": true,
+        "check_include": true,
+        "check_syntax": true,
+        "global_class": true,
+        "implement_methods": true,
+        "method_implemented_twice": true,
+        "parser_error": true,
+        "superclass_final": true,
+        "unknown_types": true,
+        "xml_consistency": true
+    }
+}
