@@ -61,7 +61,7 @@ FORM embed.
     lv_text = |{ lv_text }{ lr_text->* }{ cl_abap_char_utilities=>cr_lf }|.
   ENDLOOP.
 
-  DATA(lo_e) = zcl_vdb_002_embedding=>new( p_bid ).
+  DATA(lo_e) = zcl_vdb_002_embedding_full=>new( p_bid ).
   DATA(lv_v) = lo_e->embed( lv_text ).
 
   cl_demo_output=>display( lv_v ).
@@ -74,7 +74,7 @@ ENDFORM.
 FORM reembed.
   RETURN. "you do not want to re-embed everything ^_^
 
-  DATA(lo_e) = zcl_vdb_002_embedding=>new( p_bid ).
+  DATA(lo_e) = zcl_vdb_002_embedding_full=>new( p_bid ).
 
   SELECT *
     FROM zvdb_002_vector
