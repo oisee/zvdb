@@ -20,8 +20,8 @@ please provide response to the following request:
 
 ## How it works? Why it works? O_O
 Explained here:
- - [implementation](implementation.md).
- - as LinkedIn [blog post](https://www.linkedin.com/posts/oisee_vectordb-vectordatabase-abap-activity-7132351975907561473-PkiL?utm_source=share&utm_medium=member_desktop): 
+  - as LinkedIn article: [Vector DB in pure ABAP (any DB)](https://www.linkedin.com/pulse/vector-db-pure-abap-any-alice-vinogradova-znjbe):
+  - [implementation](implementation.md).
 
 ## Stats
 Some stats:
