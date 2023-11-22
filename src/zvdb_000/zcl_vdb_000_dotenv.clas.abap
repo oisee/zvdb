@@ -120,8 +120,8 @@ CLASS ZCL_VDB_000_DOTENV IMPLEMENTATION.
 
 
   METHOD parse_file.
-    DATA: lt_file_content TYPE string_t,
-          lt_split        TYPE string_t.
+    DATA: lt_file_content TYPE string_table,
+          lt_split        TYPE string_table.
 
     CALL METHOD cl_gui_frontend_services=>gui_upload
       EXPORTING

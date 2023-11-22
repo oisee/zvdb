@@ -140,7 +140,7 @@ CLASS lcl_ IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD go.
-    DATA:lt_s TYPE string_t.
+    DATA:lt_s TYPE string_table.
     DATA:lt_v TYPE zcl_vdb_002_lib=>tt_embedding.
     DATA(lt_) = me->import( ).
 
