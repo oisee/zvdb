@@ -38,9 +38,8 @@ CLASS lcl_ IMPLEMENTATION.
 
   METHOD new.
 
-    DATA lt_ TYPE mara_tt.
-    SELECT * FROM mara UP TO 100 ROWS
-      INTO TABLE lt_ WHERE matnr > ''.
+    DATA lt_ TYPE STANDARD TABLE OF tadir WITH EMPTY KEY.
+    SELECT * FROM tadir UP TO 100 ROWS INTO TABLE lt_.
 
 
     DATA(lo_) = zcl_vdb_000_progress=>new_for_table( lt_ ).
@@ -55,14 +54,14 @@ CLASS lcl_ IMPLEMENTATION.
 
   METHOD new_for_table.
 
-    DATA lt_ TYPE mara_tt.
-    SELECT * FROM mara INTO TABLE lt_ WHERE matnr > ''.
+    DATA lt_ TYPE STANDARD TABLE OF tadir WITH EMPTY KEY.
+    SELECT * FROM tadir UP TO 100 ROWS INTO TABLE lt_.
 
     DATA(lo_) = zcl_vdb_000_progress=>new_for_table( lt_ ).
 
     LOOP AT lt_ REFERENCE INTO DATA(lr_).
-      data: lv_ok TYPE sap_bool.
-      data(lv_) = lo_->next( IMPORTING ev_shown = lv_ok ).
+      DATA: lv_ok TYPE sap_bool.
+      DATA(lv_) = lo_->next( IMPORTING ev_shown = lv_ok ).
       IF lv_ok = 'X'.
        "WRITE: / lv_, lr_->matnr.
       ENDIF.
