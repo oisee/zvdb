@@ -1606,7 +1606,7 @@ CLASS ZCL_VDB_002_LIB IMPLEMENTATION.
 
   METHOD quantize_from_string.
     TYPES: tt_f TYPE TABLE OF f WITH DEFAULT KEY.
-    DATA:lt_s TYPE string_t.
+    DATA:lt_s TYPE string_table.
     DATA:lt_f TYPE tt_f.
     DATA:lt_v TYPE tt_embedding.
     SPLIT iv_ AT space INTO TABLE lt_s.

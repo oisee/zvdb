@@ -41,7 +41,7 @@ AT SELECTION-SCREEN.
   ENDCASE.
 
 FORM embed.
-  DATA: lt_text TYPE string_t.
+  DATA: lt_text TYPE string_table.
 
   CALL FUNCTION 'TERM_CONTROL_EDIT'
     EXPORTING

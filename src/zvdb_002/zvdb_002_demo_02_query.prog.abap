@@ -510,7 +510,7 @@ CLASS lcl_ IMPLEMENTATION.
 
   ENDMETHOD.
   METHOD embed.
-    DATA: lt_text TYPE string_t.
+    DATA: lt_text TYPE string_table.
 
     CALL FUNCTION 'TERM_CONTROL_EDIT'
       EXPORTING
@@ -537,7 +537,7 @@ CLASS lcl_ IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD answer.
-    DATA: lt_text TYPE string_t.
+    DATA: lt_text TYPE string_table.
 
     CALL FUNCTION 'TERM_CONTROL_EDIT'
       EXPORTING
