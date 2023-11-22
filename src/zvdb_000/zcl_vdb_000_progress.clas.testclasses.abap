@@ -5,7 +5,7 @@ CLASS lcl_ DEFINITION FOR TESTING
   DURATION SHORT
   RISK LEVEL HARMLESS
 .
-*?﻿<asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+*?<asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
 *?<asx:values>
 *?<TESTCLASS_OPTIONS>
 *?<TEST_CLASS>lcl_
@@ -61,8 +61,8 @@ CLASS lcl_ IMPLEMENTATION.
     DATA(lo_) = zcl_vdb_000_progress=>new_for_table( lt_ ).
 
     LOOP AT lt_ REFERENCE INTO DATA(lr_).
-      data: lv_ok TYPE sap_bool.
-      data(lv_) = lo_->next( IMPORTING ev_shown = lv_ok ).
+      DATA: lv_ok TYPE sap_bool.
+      DATA(lv_) = lo_->next( IMPORTING ev_shown = lv_ok ).
       IF lv_ok = 'X'.
        "WRITE: / lv_, lr_->matnr.
       ENDIF.

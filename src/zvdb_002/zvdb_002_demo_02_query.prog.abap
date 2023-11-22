@@ -11,7 +11,7 @@ CLASS lcl_ DEFINITION.
   PUBLIC SECTION.
     TYPES: BEGIN OF ts_alv.
              INCLUDE TYPE zvdb_002_vector.
-           TYPES:
+    TYPES:
                     hh8         TYPE sap_bool,
                     hh8ha       TYPE sap_bool,
                     hh16        TYPE sap_bool,
@@ -485,7 +485,7 @@ CLASS lcl_ IMPLEMENTATION.
         lo_columns->get_column( 'FH_OR'      )->set_long_text( 'FH OR'   ).
         lo_columns->get_column( 'FH_RANK_OR' )->set_long_text( 'FHR OR'  ).
         lo_columns->get_column( 'FH_AND'     )->set_long_text( 'FH AND'  ).
-        lo_columns->get_column( 'FH_RANK_AND')->set_long_text( 'FHR AND' ).
+        lo_columns->get_column( 'FH_RANK_AND' )->set_long_text( 'FHR AND' ).
 *--------------------------------------------------------------------*
         lo_columns->get_column( 'HH8'        )->set_long_text( 'HH8'     ).
         lo_columns->get_column( 'HH8HA'      )->set_long_text( 'HH8HA'   ).
