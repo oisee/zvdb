@@ -1912,7 +1912,7 @@ CLASS ZCL_VDB_002_LIB IMPLEMENTATION.
     ELSE.
       ls_-bid = mv_bid. " if not - use current bucket id set up during instantiation on the instance level/
     ENDIF.
-    MODIFY zvdb_002_vector FROM ls_.
+    MODIFY zvdb_002_vector FROM @ls_.
 
   ENDMETHOD.
 

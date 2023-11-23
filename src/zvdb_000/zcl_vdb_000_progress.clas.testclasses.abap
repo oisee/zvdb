@@ -5,7 +5,7 @@ CLASS lcl_ DEFINITION FOR TESTING
   DURATION SHORT
   RISK LEVEL HARMLESS
 .
-*?﻿<asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+*?<asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
 *?<asx:values>
 *?<TESTCLASS_OPTIONS>
 *?<TEST_CLASS>lcl_
