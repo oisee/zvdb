@@ -5,6 +5,16 @@ CLASS zcl_vdb_002_lib DEFINITION
 
   PUBLIC SECTION.
 
+    INTERFACES: if_amdp_marker_hdb.
+
+    TYPES: BEGIN OF ts_hana,
+             bid  TYPE zvdb_002e_bid,
+             id   TYPE guid,
+             rank TYPE int2,
+             p    TYPE string,
+           END OF ts_hana,
+            tt_hana type STANDARD TABLE OF ts_hana WITH KEY bid id.
+
     TYPES:
       BEGIN OF ts_index_bypass,
         i1 TYPE sap_bool, "heuristic hyperplane 8
@@ -88,12 +98,12 @@ CLASS zcl_vdb_002_lib DEFINITION
       END OF ts_hh_hr .
     TYPES:
       BEGIN OF ts_hash_fast_fold,
-             hff2  TYPE ty_b16,
-             hff3  TYPE ty_b24,
-             hff6  TYPE ty_b48,
-             hff12 TYPE ty_12,
-             hff24 TYPE ty_24,
-             hff48 TYPE ty_48,
+        hff2  TYPE ty_b16,
+        hff3  TYPE ty_b24,
+        hff6  TYPE ty_b48,
+        hff12 TYPE ty_12,
+        hff24 TYPE ty_24,
+        hff48 TYPE ty_48,
       END OF ts_hash_fast_fold .
     TYPES:
       BEGIN OF ts_hash,
@@ -403,6 +413,12 @@ CLASS zcl_vdb_002_lib DEFINITION
         !ix_       TYPE ts_vector-q1b
       RETURNING
         VALUE(rt_) TYPE tt_vector .
+    METHODS query_h
+      IMPORTING
+        VALUE(iv_bid) TYPE ts_vector-bid
+        VALUE(iv_q1b) TYPE ts_vector-q1b
+      EXPORTING
+        VALUE(et_)    TYPE tt_hana .
     METHODS query_by_id
       IMPORTING
         !iv_       TYPE ts_vector-id
@@ -506,7 +522,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_VDB_002_LIB IMPLEMENTATION.
+CLASS zcl_vdb_002_lib IMPLEMENTATION.
 
 
   METHOD bf.
@@ -1671,6 +1687,20 @@ CLASS ZCL_VDB_002_LIB IMPLEMENTATION.
     ).
 
   ENDMETHOD.
+
+  METHOD query_h  BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING zvdb_002_vector.
+
+    et_ = SELECT
+      bid,
+      id,
+      bitcount( bitxor( q1b, :iv_q1b ) ) as rank,
+      p
+    from zvdb_002_vector
+    WHERE bid = :iv_bid
+    ORDER BY rank;
+
+  ENDMETHOD.
+
 
 
   METHOD query_by_id.
