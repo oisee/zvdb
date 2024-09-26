@@ -27,8 +27,6 @@ CLASS zcl_vdb_002_lib DEFINITION
         index     TYPE i,
         embedding TYPE STANDARD TABLE OF ty_coordinate WITH DEFAULT KEY,
       END OF ty_embedding .
-    TYPES:
-      tty_embedding TYPE STANDARD TABLE OF ty_embedding WITH DEFAULT KEY .
     TYPES tt_embedding TYPE ty_embedding-embedding .
     TYPES ts_vector TYPE zvdb_002_vector .
     TYPES:
@@ -47,8 +45,6 @@ CLASS zcl_vdb_002_lib DEFINITION
     TYPES:
       ty_b24(3) TYPE x .
     TYPES:
-      ty_b32(4) TYPE x .
-    TYPES:
       ty_b48(6) TYPE x .
     TYPES:
       ty_12(12) TYPE x .
@@ -57,30 +53,17 @@ CLASS zcl_vdb_002_lib DEFINITION
     TYPES:
       ty_48(48) TYPE x .
     TYPES:
-      ty_96(96) TYPE x .
-    TYPES:
       tt_b8  TYPE STANDARD TABLE OF ty_b8  WITH DEFAULT KEY .
     TYPES:
       tt_b16 TYPE STANDARD TABLE OF ty_b16 WITH DEFAULT KEY .
     TYPES:
       tt_b24 TYPE STANDARD TABLE OF ty_b24 WITH DEFAULT KEY .
     TYPES:
-      tt_b32 TYPE STANDARD TABLE OF ty_b32 WITH DEFAULT KEY .
-    TYPES:
-      tt_b48 TYPE STANDARD TABLE OF ty_b48 WITH DEFAULT KEY .
-    TYPES ty_xs TYPE xstring .       "vector as xstring
-    TYPES:
       ttr_8  TYPE RANGE OF ty_b8 .          "for hamming_8
     TYPES:
       ttr_16 TYPE RANGE OF ty_b16 .         "for hamming_16
     TYPES:
       ttr_24 TYPE RANGE OF ty_b24 .         "for hamming_24
-    TYPES:
-      ttr_32 TYPE RANGE OF ty_b32 .         "for hamming_32
-    TYPES:
-      ttr_48 TYPE RANGE OF ty_b48 .         "for hamming_48
-    TYPES:
-      ttr_xs TYPE RANGE OF ty_xs .          "for hamming_xs (any vector len)
     TYPES:
       BEGIN OF ts_hh_hr,
         hh TYPE ty_b24,
