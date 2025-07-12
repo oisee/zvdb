@@ -21,7 +21,7 @@ please provide response to the following request:
 ## How it works? Why it works? O_O
 Explained here:
   - as LinkedIn article: [Vector DB in pure ABAP (any DB)](https://www.linkedin.com/pulse/vector-db-pure-abap-any-alice-vinogradova-znjbe):
-  - a draft of the above article:[implementation](implementation.md).
+  - a draft of the above article: [implementation](implementation.md).
 
 ## Stats
 Some stats:
