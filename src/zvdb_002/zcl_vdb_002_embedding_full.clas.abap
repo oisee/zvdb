@@ -1,48 +1,48 @@
-CLASS zcl_vdb_002_embedding_full DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PRIVATE .
+class ZCL_VDB_002_EMBEDDING_FULL definition
+  public
+  final
+  create private .
 
-  PUBLIC SECTION.
+public section.
 
-    CLASS-METHODS new
-      IMPORTING
-        iv_        TYPE zvdb_002_vector-bid
-      RETURNING
-        VALUE(ro_) TYPE REF TO zcl_vdb_002_embedding_full .
-    METHODS answer
-      IMPORTING
-        !iv_       TYPE string
-      EXPORTING
-        !ev_       TYPE string
-      RETURNING
-        VALUE(rx_) TYPE zcl_vdb_002_lib=>ts_vector-q1b .
-    METHODS rag
-      IMPORTING
-        !iv_       TYPE string
-        !it_       TYPE zcl_vdb_002_lib=>tt_vector
-      EXPORTING
-        !ev_prompt TYPE string
-        !et_used   TYPE zcl_vdb_002_lib=>tt_vector
-      RETURNING
-        VALUE(rv_) TYPE string .
-    METHODS answer_and_save
-      IMPORTING
-        !iv_       TYPE string
-      EXPORTING
-        !ev_       TYPE string
-      RETURNING
-        VALUE(rs_) TYPE zcl_vdb_002_lib=>ts_vector .
-    METHODS embed
-      IMPORTING
-        !iv_       TYPE string
-      RETURNING
-        VALUE(rx_) TYPE zcl_vdb_002_lib=>ts_vector-q1b .
-    METHODS embed_and_save
-      IMPORTING
-        !iv_       TYPE string
-      RETURNING
-        VALUE(rs_) TYPE zcl_vdb_002_lib=>ts_vector .
+  class-methods NEW
+    importing
+      !IV_ type ZVDB_002_VECTOR-BID
+    returning
+      value(RO_) type ref to ZCL_VDB_002_EMBEDDING_FULL .
+  methods ANSWER
+    importing
+      !IV_ type STRING
+    exporting
+      !EV_ type STRING
+    returning
+      value(RX_) type ZCL_VDB_002_LIB=>TS_VECTOR-Q1B .
+  methods RAG
+    importing
+      !IV_ type STRING
+      !IT_ type ZCL_VDB_002_LIB=>TT_VECTOR
+    exporting
+      !EV_PROMPT type STRING
+      !ET_USED type ZCL_VDB_002_LIB=>TT_VECTOR
+    returning
+      value(RV_) type STRING .
+  methods ANSWER_AND_SAVE
+    importing
+      !IV_ type STRING
+    exporting
+      !EV_ type STRING
+    returning
+      value(RS_) type ZCL_VDB_002_LIB=>TS_VECTOR .
+  methods EMBED
+    importing
+      !IV_ type STRING
+    returning
+      value(RX_) type ZCL_VDB_002_LIB=>TS_VECTOR-Q1B .
+  methods EMBED_AND_SAVE
+    importing
+      !IV_ type STRING
+    returning
+      value(RS_) type ZCL_VDB_002_LIB=>TS_VECTOR .
   PROTECTED SECTION.
   PRIVATE SECTION.
 
